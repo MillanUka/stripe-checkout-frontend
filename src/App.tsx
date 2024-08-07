@@ -1,26 +1,45 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import "./App.css";
+
+function ProductDisplay() {
+  return (
+    <section>
+      <div className="product">
+        <form
+          action="http://localhost:8001/create-checkout-session"
+          method="POST"
+        >
+          <button type="submit">Checkout</button>
+        </form>
+      </div>
+    </section>
+  );
+}
+
+function Message({ message }: { message: string }) {
+  return (
+    <section>
+      <p>{message}</p>
+    </section>
+  );
+}
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    const query = new URLSearchParams(window.location.search);
+
+    if (query.get("success")) {
+      setMessage("Order place! You will receive an email confirmation.");
+    }
+
+    if (query.get("canceled")) {
+      setMessage("Order canceled");
+    }
+  }, []);
+
+  return message ? <Message message={message} /> : <ProductDisplay />;
 }
 
 export default App;
