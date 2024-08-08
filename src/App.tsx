@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-
 function ProductDisplay() {
   return (
     <section>
-      <div className="product">
+      <div>
         <form
-          action="http://localhost:8001/create-checkout-session"
+          action={`${process.env.REACT_APP_BACKEND_BASE_URL}/create-checkout-session`}
           method="POST"
         >
+          Pay me $10
+          <br />
           <button type="submit">Checkout</button>
         </form>
       </div>
+      ``
     </section>
   );
 }
@@ -39,7 +41,11 @@ function App() {
     }
   }, []);
 
-  return message ? <Message message={message} /> : <ProductDisplay />;
+  return (
+    <div className="App">
+      {message ? <Message message={message} /> : <ProductDisplay />}
+    </div>
+  );
 }
 
 export default App;
